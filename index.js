@@ -1,10 +1,11 @@
 const crypto = require('crypto')
+const int53 = require('int53')
 
-const MAX_SAFE_INT = Math.pow(2, 48) - 1
+const MAX_SAFE_INT = Math.pow(2, 53) - 1
 
-module.exports = rejectionSampledInt
+module.exports = randomRejectionSampledInt
 
-function rejectionSampledInt (min, max = MAX_SAFE_INT) {
+function _setup (min, max) {
   if (max > MAX_SAFE_INT) {
     throw new Error(
       `requested max ${max} exceeds the greatest supported value of ${MAX_SAFE_INT}`
@@ -14,15 +15,23 @@ function rejectionSampledInt (min, max = MAX_SAFE_INT) {
   }
 
   const target = max - min
-  const bytesNeeded = Math.ceil((Math.floor(Math.log2(target)) + 1) / 8)
-  const buf = Buffer.alloc(6)
+
+  return {bytesNeeded: Math.ceil((Math.floor(Math.log2(target)) + 1) / 8)}
+}
+
+function randomRejectionSampledInt (min = 0, max = MAX_SAFE_INT) {
+  const {bytesNeeded} = _setup(min, max)
+  const buf = Buffer.alloc(8)
 
   while (true) {
     const rand = crypto.randomBytes(bytesNeeded)
+    let int
 
-    buf.fill(rand, 6 - bytesNeeded)
+    buf.fill(rand, 8 - bytesNeeded)
 
-    const int = buf.readUIntBE(0, 6) + min
+    try {
+      int = int53.readUInt64BE(buf)
+    } catch (e) {}
 
     if (int < max) {
       return int

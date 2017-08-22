@@ -1,0 +1,29 @@
+{
+  "name": "rejection-sampled-int",
+  "version": "0.1.0",
+  "description": "Cryptographically random integers, chosen by a rejection sampling algorithm",
+  "main": "index.js",
+  "dependencies": {
+    "int53": "^0.2.4"
+  },
+  "devDependencies": {
+    "tape": "^4.8.0"
+  },
+  "scripts": {
+    "test": "tape test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fardog/rejection-sampled-int.git"
+  },
+  "keywords": [
+    "integer",
+    "random"
+  ],
+  "author": "Nathan Wittstock <nate@fardog.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fardog/rejection-sampled-int/issues"
+  },
+  "homepage": "https://github.com/fardog/rejection-sampled-int#readme"
+}
