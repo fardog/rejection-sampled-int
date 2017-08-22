@@ -24,3 +24,13 @@ test('returns expected values given boundaries', t => {
 
   t.end()
 })
+
+test('throws on too large max', t => {
+  t.throws(() => lib(0, Number.MAX_SAFE_INTEGER + 1))
+  t.end()
+})
+
+test('throws on min > max', t => {
+  t.throws(() => lib(10, 2))
+  t.end()
+})
