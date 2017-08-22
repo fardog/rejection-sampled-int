@@ -9,16 +9,20 @@ module.exports._setup = _setup
 function _setup (min, max) {
   if (max > MAX_SAFE_INT) {
     throw new Error(
-      `requested max ${max} exceeds the greatest supported value of ${MAX_SAFE_INT}`
+      'requested max ' + max + ' exceeds the greatest supported value of ' +
+      MAX_SAFE_INT
     )
   } else if (min > max) {
-    throw new Error(`min cannot be greater than max; ${min} > ${max}`)
+    throw new Error('min cannot be greater than max; ' + min + ' > ' + max)
   }
 
   return {bytesNeeded: Math.ceil((Math.floor(Math.log2(max - min)) + 1) / 8)}
 }
 
-function randomRejectionSampledInt (min = 0, max = MAX_SAFE_INT) {
+function randomRejectionSampledInt (_min, _max) {
+  var min = _min || 0
+  var max = _max || MAX_SAFE_INT
+
   var {bytesNeeded} = _setup(min, max)
   var buf = Buffer.alloc(8)
 

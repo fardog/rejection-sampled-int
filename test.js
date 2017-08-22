@@ -3,11 +3,13 @@ var test = require('tape')
 var lib = require('./')
 
 test('returns integer', t => {
-  for (var i = 0; i < 100; ++i) {
+  var i = 0
+  while (i < 100) {
     var int = lib()
 
     t.ok(Number.isInteger(int))
     t.ok(Number.isSafeInteger(int))
+    ++i
   }
 
   t.end()
@@ -16,9 +18,11 @@ test('returns integer', t => {
 test('returns expected values given boundaries', t => {
   var boundaries = [7, 127, 255, 256, 65535, 65536, 4294967295, 4294967296]
 
-  for (var boundary of boundaries) {
-    for (var i = 0; i < 100; ++i) {
-      t.ok(lib(0, boundary) < boundary)
+  for (var i = 0; i < boundaries.length; ++i) {
+    var j = 0
+    while (j < 100) {
+      t.ok(lib(0, boundaries[i]) < boundaries[i])
+      ++j
     }
   }
 
