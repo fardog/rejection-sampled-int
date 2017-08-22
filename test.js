@@ -1,11 +1,10 @@
-'use strict'
-const test = require('tape')
+var test = require('tape')
 
-const lib = require('./')
+var lib = require('./')
 
 test('returns integer', t => {
-  for (let i = 0; i < 100; ++i) {
-    const int = lib()
+  for (var i = 0; i < 100; ++i) {
+    var int = lib()
 
     t.ok(Number.isInteger(int))
     t.ok(Number.isSafeInteger(int))
@@ -15,10 +14,10 @@ test('returns integer', t => {
 })
 
 test('returns expected values given boundaries', t => {
-  const boundaries = [7, 127, 255, 256, 65535, 65536, 4294967295, 4294967296]
+  var boundaries = [7, 127, 255, 256, 65535, 65536, 4294967295, 4294967296]
 
-  for (const boundary of boundaries) {
-    for (let i = 0; i < 100; ++i) {
+  for (var boundary of boundaries) {
+    for (var i = 0; i < 100; ++i) {
       t.ok(lib(0, boundary) < boundary)
     }
   }

@@ -1,8 +1,7 @@
-'use strict'
-const crypto = require('crypto')
-const int53 = require('int53')
+var crypto = require('crypto')
+var int53 = require('int53')
 
-const MAX_SAFE_INT = Math.pow(2, 53) - 1
+var MAX_SAFE_INT = Math.pow(2, 53) - 1
 
 module.exports = randomRejectionSampledInt
 module.exports._setup = _setup
@@ -20,12 +19,12 @@ function _setup (min, max) {
 }
 
 function randomRejectionSampledInt (min = 0, max = MAX_SAFE_INT) {
-  const {bytesNeeded} = _setup(min, max)
-  const buf = Buffer.alloc(8)
+  var {bytesNeeded} = _setup(min, max)
+  var buf = Buffer.alloc(8)
 
   while (true) {
-    const rand = crypto.randomBytes(bytesNeeded)
-    let int
+    var rand = crypto.randomBytes(bytesNeeded)
+    var int
 
     buf.fill(rand, 8 - bytesNeeded)
 
