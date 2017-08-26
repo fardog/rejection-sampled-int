@@ -4,12 +4,13 @@ var int53 = require('int53')
 var MAX_SAFE_INT = Math.pow(2, 53) - 1
 
 module.exports = rejectionSampledInt
-module.exports.sync = sync
+module.exports.sync = rejectionSampledIntSync
 module.exports._setup = _setup
 
-function _setup (_min, _max) {
-  var min = _min || 0
-  var max = _max || MAX_SAFE_INT
+function _setup (_opts) {
+  var opts = _opts || {}
+  var min = opts.min || 0
+  var max = opts.max || MAX_SAFE_INT
 
   if (max > MAX_SAFE_INT) {
     throw new Error(
@@ -29,15 +30,13 @@ function _setup (_min, _max) {
 }
 
 function rejectionSampledInt (_opts, _ready) {
-  var ready = _ready
-  var opts = _opts || {}
-
-  if (typeof ready !== 'function') {
-    ready = _opts
-    opts = {}
+  if (typeof _opts === 'function') {
+    _ready = _opts
+    _opts = {}
   }
 
-  opts = _setup(opts.min, opts.max)
+  var opts = _setup(_opts)
+  var ready = _ready
 
   process.nextTick(sample.bind(null, opts, ready))
 
@@ -66,8 +65,8 @@ function rejectionSampledInt (_opts, _ready) {
   }
 }
 
-function sync (_min, _max) {
-  var opts = _setup(_min, _max)
+function rejectionSampledIntSync (_opts) {
+  var opts = _setup(_opts)
   var buf = Buffer.alloc(8)
 
   while (true) {

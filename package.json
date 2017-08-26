@@ -7,6 +7,7 @@
     "int53": "^0.2.4"
   },
   "devDependencies": {
+    "standard": "^10.0.3",
     "tape": "^4.8.0"
   },
   "scripts": {
