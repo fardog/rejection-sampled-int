@@ -7,10 +7,12 @@
     "int53": "^0.2.4"
   },
   "devDependencies": {
+    "standard": "^10.0.3",
     "tape": "^4.8.0"
   },
   "scripts": {
-    "test": "tape test.js"
+    "lint": "standard **/*.js",
+    "test": "npm run lint && tape test.js"
   },
   "repository": {
     "type": "git",
