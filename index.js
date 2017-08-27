@@ -38,31 +38,38 @@ function rejectionSampledInt (_opts, _ready) {
   var opts = _setup(_opts)
   var ready = _ready
 
-  process.nextTick(sample.bind(null, opts, ready))
-
-  function sample (o, r) {
-    var buf = Buffer.alloc(8)
-
-    crypto.randomBytes(o.bytesNeeded, onRand)
-
-    function onRand (err, rand) {
-      if (err) return ready(err)
-
-      var int
-
-      buf.fill(rand, 8 - opts.bytesNeeded)
-
-      try {
-        int = int53.readUInt64BE(buf)
-      } catch (e) {}
-
-      if (int < opts.target) {
-        return r(null, int + o.min)
-      }
-
-      process.nextTick(sample.bind(null, o, r))
-    }
+  if (ready) {
+    return begin(ready.bind(this, null), ready)
   }
+  return new Promise(begin)
+
+  function begin (resolve, reject) {
+    process.nextTick(sample.bind(null, opts, resolve, reject))
+
+    function sample (o, res, rej) {
+      var buf = Buffer.alloc(8)
+
+      crypto.randomBytes(o.bytesNeeded, onRand)
+
+      function onRand (err, rand) {
+        if (err) return rej(err)
+
+        var int
+
+        buf.fill(rand, 8 - opts.bytesNeeded)
+
+        try {
+          int = int53.readUInt64BE(buf)
+        } catch (e) { }
+
+        if (int < opts.target) {
+          return res(int + o.min)
+        }
+
+        process.nextTick(sample.bind(null, o, res, rej))
+      }
+    }
+}
 }
 
 function rejectionSampledIntSync (_opts) {

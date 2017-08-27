@@ -72,6 +72,22 @@ test('allows omitting options', t => {
   })
 })
 
+test('returns promise when ready is omitted', t => {
+  lib().then(int => {
+    t.ok(Number.isInteger(int))
+    t.ok(Number.isSafeInteger(int))
+    t.end()
+  }).catch(e => t.fail(e))
+})
+
+test('accepts options with promise', t => {
+  lib({min: 1, max: 16}).then(int => {
+    t.ok(int >= 1)
+    t.ok(int < 16)
+    t.end()
+  }).catch(e => t.fail(e))
+})
+
 test('sync: returns integer', t => {
   var i = 0
   while (i < 100) {
