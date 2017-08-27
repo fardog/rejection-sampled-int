@@ -39,7 +39,7 @@ function rejectionSampledInt (_opts, _ready) {
   var ready = _ready
 
   if (ready) {
-    return begin(ready.bind(this, null), ready)
+    return begin(ready.bind(this, null), ready.bind(this))
   }
   return new Promise(begin)
 
