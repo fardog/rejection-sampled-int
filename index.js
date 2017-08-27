@@ -69,7 +69,7 @@ function rejectionSampledInt (_opts, _ready) {
         process.nextTick(sample.bind(null, o, res, rej))
       }
     }
-}
+  }
 }
 
 function rejectionSampledIntSync (_opts) {
