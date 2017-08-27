@@ -8,11 +8,13 @@
   },
   "devDependencies": {
     "standard": "^10.0.3",
-    "tape": "^4.8.0"
+    "tape": "^4.8.0",
+    "typescript": "^2.4.2"
   },
   "scripts": {
     "lint": "standard **/*.js",
-    "test": "npm run lint && tape test.js"
+    "test-ts": "tsc --noEmit test.ts",
+    "test": "tape test.js && npm run test-ts && npm run lint"
   },
   "repository": {
     "type": "git",

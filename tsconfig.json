@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "es2016",
+        "module": "commonjs",
+        "allowJs": true,
+        "noImplicitAny": true,
+        "noEmit": true
+    },
+    "include": [
+        "test.ts"
+    ]
+}
