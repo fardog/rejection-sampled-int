@@ -2,16 +2,16 @@
 // Project: rejection-sampled-int
 // Definitions by: Nathan Wittstock <fardog.io>
 
-export as namespace rejectionSampledInt
-export = rejectionSampledInt
+export as namespace rejectionSampledIntLib
+export = RejectionSampledInt
 
-declare interface rejectionSampledInt {
-    (opts?: rejectionSampledInt.Options, ready: rejectionSampledInt.ReadyFn): void
-    (opts?: rejectionSampledInt.Options): Promise<number>
-    sync(opts?: rejectionSampledInt.Options): number
-}
+declare function RejectionSampledInt (ready: RejectionSampledInt.ReadyFn): void
+declare function RejectionSampledInt (opts: RejectionSampledInt.Options, ready: RejectionSampledInt.ReadyFn): void
+declare function RejectionSampledInt (opts?: RejectionSampledInt.Options): Promise<number>
 
-declare namespace rejectionSampledInt {
+declare namespace RejectionSampledInt {
+    export function sync(opts?: Options): number
+
     export interface Options {
         min?: number
         max?: number
