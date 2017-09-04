@@ -2,15 +2,20 @@ var test = require('tape')
 
 var lib = require('./')
 
+var TEST_ITERATIONS = Number.parseInt(process.env.TEST_ITERATIONS)
+if (Number.isNaN(TEST_ITERATIONS)) {
+  TEST_ITERATIONS = 100
+}
+
 test('returns integer', t => {
   var i = 0
   var ct = 0
-  while (i < 100) {
+  while (i < TEST_ITERATIONS) {
     lib({min: 0}, (err, int) => {
       t.ok(!err)
       t.ok(Number.isInteger(int))
       t.ok(Number.isSafeInteger(int))
-      if (++ct === 100) {
+      if (++ct === TEST_ITERATIONS) {
         t.end()
       }
     })
@@ -24,12 +29,12 @@ test('returns expected values given boundaries', t => {
 
   for (var i = 0; i < boundaries.length; ++i) {
     var j = 0
-    while (j < 100) {
+    while (j < TEST_ITERATIONS) {
       ((high) => {
         lib({min: 0, max: high}, (err, int) => {
           t.ok(!err)
           t.ok(int < high)
-          if (++ct === boundaries.length * 100) t.end()
+          if (++ct === boundaries.length * TEST_ITERATIONS) t.end()
         })
       })(boundaries[i])
       ++j
@@ -50,12 +55,12 @@ test('returns expected values given min boundaries', t => {
   for (var i = 0; i < boundaries.length; ++i) {
     ((boundary) => {
       var j = 0
-      while (j < 100) {
+      while (j < TEST_ITERATIONS) {
         lib(boundary, (err, int) => {
           t.ok(!err)
           t.ok(int >= boundary.min)
           t.ok(int < boundary.max)
-          if (++ct === boundaries.length * 100) t.end()
+          if (++ct === boundaries.length * TEST_ITERATIONS) t.end()
         })
         ++j
       }
@@ -90,7 +95,7 @@ test('accepts options with promise', t => {
 
 test('sync: returns integer', t => {
   var i = 0
-  while (i < 100) {
+  while (i < TEST_ITERATIONS) {
     var int = lib.sync()
 
     t.ok(Number.isInteger(int))
@@ -106,7 +111,7 @@ test('sync: returns expected values given boundaries', t => {
 
   for (var i = 0; i < boundaries.length; ++i) {
     var j = 0
-    while (j < 100) {
+    while (j < TEST_ITERATIONS) {
       t.ok(lib.sync({min: 0, max: boundaries[i]}) < boundaries[i])
       ++j
     }
@@ -126,7 +131,7 @@ test('sync: returns expected values given min boundaries', t => {
 
   for (var i = 0; i < boundaries.length; ++i) {
     var j = 0
-    while (j < 100) {
+    while (j < TEST_ITERATIONS) {
       var int = lib.sync(boundaries[i])
       t.ok(int >= boundaries[i].min)
       t.ok(int < boundaries[i].max)
