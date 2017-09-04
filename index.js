@@ -56,7 +56,7 @@ function rejectionSampledInt (_opts, _ready) {
 
         var int
 
-        buf.fill(rand, 8 - opts.bytesNeeded)
+        rand.copy(buf, 8 - opts.bytesNeeded)
 
         try {
           int = int53.readUInt64BE(buf)
@@ -80,7 +80,7 @@ function rejectionSampledIntSync (_opts) {
     var rand = crypto.randomBytes(opts.bytesNeeded)
     var int
 
-    buf.fill(rand, 8 - opts.bytesNeeded)
+    rand.copy(buf, 8 - opts.bytesNeeded)
 
     try {
       int = int53.readUInt64BE(buf)

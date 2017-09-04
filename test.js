@@ -10,8 +10,15 @@ if (Number.isNaN(TEST_ITERATIONS)) {
 test('returns integer', t => {
   var i = 0
   var ct = 0
+  var seenCt = {}
   while (i < TEST_ITERATIONS) {
     lib({min: 0}, (err, int) => {
+      if (!seenCt[int]) seenCt[int] = 1
+      else seenCt[int] = seenCt[int] + 1
+      if (seenCt[int] > TEST_ITERATIONS / 2) {
+        t.fail('too many of the same value seen; something is wrong')
+      }
+
       t.ok(!err)
       t.ok(Number.isInteger(int))
       t.ok(Number.isSafeInteger(int))
@@ -29,9 +36,15 @@ test('returns expected values given boundaries', t => {
 
   for (var i = 0; i < boundaries.length; ++i) {
     var j = 0
+    var seenCt = {}
     while (j < TEST_ITERATIONS) {
       ((high) => {
         lib({min: 0, max: high}, (err, int) => {
+          if (!seenCt[int]) seenCt[int] = 1
+          else seenCt[int]++
+          if (seenCt[int] > TEST_ITERATIONS / 2) {
+            t.fail('too many of the same value seen; something is wrong')
+          }
           t.ok(!err)
           t.ok(int < high)
           if (++ct === boundaries.length * TEST_ITERATIONS) t.end()
@@ -55,8 +68,15 @@ test('returns expected values given min boundaries', t => {
   for (var i = 0; i < boundaries.length; ++i) {
     ((boundary) => {
       var j = 0
+      var seenCt = {}
       while (j < TEST_ITERATIONS) {
         lib(boundary, (err, int) => {
+          if (!seenCt[int]) seenCt[int] = 1
+          else seenCt[int] = seenCt[int] + 1
+          if (seenCt[int] > TEST_ITERATIONS / 2) {
+            t.fail('too many of the same value seen; something is wrong')
+          }
+
           t.ok(!err)
           t.ok(int >= boundary.min)
           t.ok(int < boundary.max)
@@ -95,8 +115,14 @@ test('accepts options with promise', t => {
 
 test('sync: returns integer', t => {
   var i = 0
+  var seenCt = {}
   while (i < TEST_ITERATIONS) {
     var int = lib.sync()
+    if (!seenCt[int]) seenCt[int] = 1
+    else seenCt[int] = seenCt[int] + 1
+    if (seenCt[int] > TEST_ITERATIONS / 2) {
+      t.fail('too many of the same value seen; something is wrong')
+    }
 
     t.ok(Number.isInteger(int))
     t.ok(Number.isSafeInteger(int))
@@ -111,8 +137,16 @@ test('sync: returns expected values given boundaries', t => {
 
   for (var i = 0; i < boundaries.length; ++i) {
     var j = 0
+    var seenCt = {}
     while (j < TEST_ITERATIONS) {
-      t.ok(lib.sync({min: 0, max: boundaries[i]}) < boundaries[i])
+      var int = lib.sync({min: 0, max: boundaries[i]})
+      if (!seenCt[int]) seenCt[int] = 1
+      else seenCt[int] = seenCt[int] + 1
+      if (seenCt[int] > TEST_ITERATIONS / 2) {
+        t.fail('too many of the same value seen; something is wrong')
+      }
+
+      t.ok(int < boundaries[i])
       ++j
     }
   }
@@ -131,8 +165,15 @@ test('sync: returns expected values given min boundaries', t => {
 
   for (var i = 0; i < boundaries.length; ++i) {
     var j = 0
+    var seenCt = {}
     while (j < TEST_ITERATIONS) {
       var int = lib.sync(boundaries[i])
+      if (!seenCt[int]) seenCt[int] = 1
+      else seenCt[int] = seenCt[int] + 1
+      if (seenCt[int] > TEST_ITERATIONS / 2) {
+        t.fail('too many of the same value seen; something is wrong')
+      }
+
       t.ok(int >= boundaries[i].min)
       t.ok(int < boundaries[i].max)
       ++j
