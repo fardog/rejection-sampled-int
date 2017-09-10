@@ -1,4 +1,4 @@
-// Type definitions for rejection-sampled-int 0.2.1
+// Type definitions for rejection-sampled-int
 // Project: rejection-sampled-int
 // Definitions by: Nathan Wittstock <fardog.io>
 
