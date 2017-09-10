@@ -1,4 +1,4 @@
-// Type definitions for rejection-sampled-int 0.2.1
+// Type definitions for rejection-sampled-int
 // Project: rejection-sampled-int
 // Definitions by: Nathan Wittstock <fardog.io>
 
@@ -17,4 +17,12 @@ declare namespace RejectionSampledInt {
         max?: number
     }
     export type ReadyFn = (err: Error, int: number) => void
+
+    export function _setup(opts: Options): TargetOptions
+    export interface TargetOptions {
+        bytesNeeded: number
+        min: number
+        max: number
+        target: number
+    }
 }
