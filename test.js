@@ -31,7 +31,7 @@ test('returns integer', t => {
 })
 
 test('returns expected values given boundaries', t => {
-  var boundaries = [7, 127, 255, 256, 65535, 65536, 4294967295, 4294967296]
+  var boundaries = [7, 128, 129, 256, 257, 65536, 65537, 4294967296, 4294967297]
   var ct = 0
 
   for (var i = 0; i < boundaries.length; ++i) {
