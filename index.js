@@ -25,7 +25,7 @@ function _setup (_opts) {
     min: min,
     max: max,
     target: max - min,
-    bytesNeeded: Math.ceil((Math.floor(Math.log2(max - min)) + 1) / 8)
+    bytesNeeded: Math.ceil(Math.log2(max - min) / 8)
   }
 }
 
